@@ -6,12 +6,17 @@ Team: Violet-2
 
 Team Members: 
 
-Fjollë Gjonbalaj
-Brendan Ok
-Abby Johnson
-Victor Besse
-Christina Ridlen
-Steven Kim
+[Fjollë Gjonbalaj](https://github.com/Fjolle)
+
+[Brendan Ok](https://github.com/brendanok)
+
+[Abby Johnson](https://github.com/johnsonabigail)
+
+[Victor Besse](https://github.com/Victor-Besse)
+
+[Christina Ridlen](https://github.com/csridlen)
+
+[Steven Kim](https://github.com/su1214)
 
 ## Introduction
 
