@@ -1,0 +1,5 @@
+install nb_black with `$ pip install nb_black`
+install requests with `$ pip install requests` 
+install tabulate with `$ pip install tabulate` 
+install future with `$ pip install future`
+install h2o with  `$ pip install h2o`
