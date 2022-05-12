@@ -1,44 +1,46 @@
-{% extends 'child.html' %}
-
-
-{% block type %}
-<h5><strong>{{customer}}</strong></h5>
-{% endblock %}
-
-
-{% block action %}
-<h5>Map</h5>
-{% endblock %}
-
-
-{% block main %}
-<div class="section section-lg pt-0">
-    <form action="/tourist/map/view" method="POST" class="map_form" id="input_val">
-        <div class="col-12">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-8">
-                    <div class="form-group">
-                        <label class="h6 font-weight-light text-gray" for="subscribeInputEmail">Select a city</label>
-                        <div class="d-flex flex-row justify-content-center">
-                            <select name="city" class="custom-select my-1 mr-sm-2" required>
-                                <option value="">Select</option>
-                                {% for key, value in city_dict.items() %}
-                                    <option value="{{key}}">
-                                    {{value}}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                            <div class="input-group-prepend">
-                                <button type="submit" class="btn btn-primary rounded-right" id="myButton1">Submit</button>
-                                <div class="loadshow"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-<br><br>
-<br><br>
-{% endblock %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2113.3">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); background-color: #ffffff}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); background-color: #ffffff; min-height: 13.0px}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Times; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); background-color: #ffffff}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Times; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); background-color: #ffffff; min-height: 13.0px}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); min-height: 13.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85)}
+    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+    span.s2 {font: 11.0px Times; font-kerning: none}
+    span.s3 {font-kerning: none; background-color: #ffffff}
+    span.s4 {font-kerning: none; background-color: #b3b3b3}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">{% extends 'child.html' %} {% block type %}</span></p>
+<h5 style="margin: 0.0px 0.0px 16.6px 0.0px; font: 10.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>{{customer}}</b></span></h5>
+<p class="p1"><span class="s1">{% endblock %} {% block action %}</span></p>
+<h5 style="margin: 0.0px 0.0px 16.6px 0.0px; font: 10.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>Map</b></span></h5>
+<p class="p1"><span class="s1">{% endblock %} {% block main %}</span></p>
+<p class="p1"><span class="s1">Select a neighborhood group</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                </span></span><span class="s2">Select</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                </span>{% for key, value in neighborhood_group_dict.items() %}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                                    </span>{{value}}</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                                    </span></span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                </span>{% endfor %}</span></p>
+<p class="p7"><span class="s3"><span class="Apple-converted-space">                            </span></span></p>
+<p class="p8"><span class="s4">Submit</span></p>
+<p class="p9"><span class="s1"></span><br></p>
+<p class="p9"><span class="s1"></span><br></p>
+<p class="p9"><span class="s1"></span><br></p>
+<p class="p9"><span class="s1"></span><br></p>
+<p class="p9"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">{% endblock %}</span></p>
+</body>
+</html>

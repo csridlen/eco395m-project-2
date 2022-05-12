@@ -1,7 +1,5 @@
 import pandas as pd
 import numpy as np
-import mapping as mp
-import model 
 import random
 import os
 import folium
@@ -10,7 +8,9 @@ import time
 from folium import plugins
 import flask
 from flask import Flask, render_template, request, redirect, session, url_for, make_response
-
+import mapping as mp
+import preprocess as pre
+import model 
 
 
 class MyFlask(flask.Flask):
@@ -25,6 +25,9 @@ app.secret_key = 'NYC Airbnb'
 
 
 df = pd.read_csv("../data/newnh_airbnb_2021.csv")
+not_used = ["id", "host_id", "host_name", "neighbourhood", "last_review", "license"]
+X = df.drop(not_used, axis = 1)
+
 
 @app.route('/')
 def main():
@@ -49,8 +52,7 @@ def host():
 def hostprice():
     session['title'] = 'price estimation - '
     session['customer'] = 'host'
-    return render_template('price.html', title=session['title'], customer=session['customer'], neighbourhood_dict=mp.id_neighborhood_dict,
-                           neighbourhood_group_dict=mp.id_neighbourhood_group_dict, room_type_dict=mp.id_room_type_dict)
+    return render_template('price.html', title=session['title'], customer=session['customer'],neighbourhood_dict=mp.id_neighborhood_dict, neighbourhood_group_dict=mp.id_neighbourhood_group_dict, room_type_dict=mp.id_room_type_dict)
 
 
 
@@ -73,17 +75,16 @@ def hostmapview():
         map_data = request.form.to_dict(flat=True)
         session['map_data'] = map_data
 
-    if (session['map_data']['city'][0]!='Select'):
-        CityId = int(session['map_data']['city'])
+    if (session['map_data']['neighbourhood_group'][0]!='Select'):
+        NeighbourhoodGroupId = int(session['map_data']['neighbourhood_group'])
 
-        map = pre.make_map(df, CityId)
+        map = pre.make_map(X, NeighbourhoodGroupId)
         map.save('static/maps/map.html')
     else:
-        CityId = 100
+        NeighbourhoodGroupId = 2
     
     return render_template('mapnearbyview.html', title=session['title'], customer=session['customer'],
-                            city_dict=mp.id_city_dict, city_name=mp.id_city_dict[CityId], link=mp.nearby_id_link_dict[CityId],
-                            label=mp.nearby_id_name_dict[CityId])
+                            neighbourhood_group_dict=mp.id_neighbourhood_group_dict, neighbourhood_group=mp.id_neighbourhood_group_dict[NeighbourhoodGroupId])
 
 
 @app.route('/host/price/result', methods=['GET', 'POST'])
@@ -99,29 +100,19 @@ def pricepredict():
         form_data = request.form.to_dict(flat=True)
         session['form_data'] = form_data
 
-        CityId = int(form_data['city'])
-        pred = pre.regressor(form_data, CityId, reg)
+        NeighbourhoodGroupId = int(form_data['neighbourhood_group'])
+        pred = pre.regressor(form_data, NeighbourhoodGroupId, gbm_model)
         pred_total = pred*(int(form_data['minimum_nights']))
         
-        map = pre.make_map(df, CityId)
+        map = pre.make_map(X, NeighbourhoodGroupId)
         map.save('static/maps/map.html')
 
-    return render_template('priceresult.html', customer=session['customer'], title=session['title'], city_dict=mp.id_city_dict,
-                           popularity_dict=mp.id_pop_dict, form_data=form_data, city=mp.id_city_dict[int(form_data['city'])],
-                           popu=mp.id_pop_dict[int(form_data['popularity'][0])], room_type_dict=mp.id_room_type_dict,
-                           roomt=mp.id_room_type_dict[int(form_data['room_type'][0])], current_time=int(time.time()),
-                           link=mp.nearby_id_link_dict[CityId], label=mp.nearby_id_name_dict[CityId], pred=pred, pred_total=pred_total)
-
-
-@app.route('/data')
-def data():
-    session['title'] = 'data - '
-    session['customer'] = 'data'
-    return render_template('data.html', title=session['title'], customer=session['customer'])
+    return render_template('priceresult.html', customer=session['customer'], title=session['title'], neighbourhood_group_dict=mp.id_neighbourhood_group_dict,
+                           form_data=form_data, neighbourhood_group=mp.id_neighbourhood_group_dict[int(form_data['neighbourhood_group'])],
+                           room_type_dict=mp.id_room_type_dict,
+                           roomt=mp.id_room_type_dict[int(form_data['room_type'][0])], pred=pred, pred_total=pred_total)
 
 
 if __name__ == '__main__':
     app.run()
-© 2022 GitHub, Inc.
-Terms
-Privacy
+
