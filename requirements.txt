@@ -1,8 +1,18 @@
-install nb_black with `$ pip install nb_black`
-install requests with `$ pip install requests` 
-install tabulate with `$ pip install tabulate` 
-install future with `$ pip install future`
-install h2o with  `$ pip install h2o`
-install plotly with `$ pip install plotly`
-install sklearn with `$ pip install sklearn`
-install shapely with `$ pip install shapely`
+nb_black
+pandas == 1.3.5
+numpy == 1.19.5
+requests
+tabulate
+future
+h2o
+urllib
+plotly
+seaborn == 0.11.2
+wordcloud
+math
+statsmodels
+sklearn
+scipy
+shapely
+yellowbrick
+matplotlib
