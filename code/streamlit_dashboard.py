@@ -111,26 +111,40 @@ gbm_model = reg.fit(X_train, y_train)
 #writing the function. 
 #Turning csv file into dataframe
 
-#@st.cache
-# def load_data():
-#     """ Function for loading data"""
-#     df =pd.read_csv("../data/data_2021_distance.csv")
+@st.cache
+def load_data():
+    """ Function for loading data"""
+    df =pd.read_csv("../data/data_2021_distance.csv")
+
     
-#     numeric_df = df.select_dtypes(['float', 'int'])
-#     numeric_cols = numeric_df.columns
+    numeric_df = df.select_dtypes(['float', 'int'])
+    numeric_cols = numeric_df.columns
     
-#     text_df = df.select_dtypes(['object'])
-#     text_cols = text_df.columns
+    text_df = df.select_dtypes(['object'])
+    text_cols = text_df.columns
     
-    
-#     return df, numeric_cols, text_cols
+   
+   return df, numeric_cols, text_cols, numeric_df, text_df
 
 
 # df, numeric_cols, text_cols = load_data()
 
+# find data mean or mode to set as default value
+mnn = df["minimum_nights"].mean()
+nrv = df["number_of_reviews"].mean()
+hlc = df["calculated_host_listings_count"].mean()
+avallyear = df["availability_365"].mean()
+nrevltm = df["number_of_reviews_ltm"].mean()
+
+nbg = df["neighbourhood_group"].mode()
+nb = df["new_neighbourhood"].mode()
+rt = df["room_type"].mode()
+
+
 #Title for the dashboard
 
 st.title("NYC Airbnb Smart Pricing")
+
 
 # showing dataset 
 #st.write(df)
@@ -182,3 +196,4 @@ X = pd.DataFrame(inputs, columns = ['neighborhood_group', 'minimum_nights','numb
 pred = gbm_model.predict(X)
 
 st.metric(label="Predicted Price", value=pred, delta= 5.00, delta_color="inverse")
+
