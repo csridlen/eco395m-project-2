@@ -11,9 +11,11 @@ seaborn == 0.11.2
 wordcloud
 math
 statsmodels
-java
 sklearn
 scipy
 shapely
 yellowbrick
 matplotlib
+psycopg2-binary
+
+apt install default-jdk
