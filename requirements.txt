@@ -3,3 +3,6 @@ install requests with `$ pip install requests`
 install tabulate with `$ pip install tabulate` 
 install future with `$ pip install future`
 install h2o with  `$ pip install h2o`
+install plotly with `$ pip install plotly`
+install sklearn with `$ pip install sklearn`
+install shapely with `$ pip install shapely`
