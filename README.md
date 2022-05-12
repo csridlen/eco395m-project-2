@@ -50,7 +50,7 @@ We decided to use proximiity to subway stations and parks as a predictor in Airb
 
 Plots below show the distance to the nearest [park](artifacts/nearest_park2/html) and [station](artifacts/nearest_station_2.html). 
 
-![Plot 3](artifacts/artifacts/nearest_park2.png) ![Plot 4](artifacts/artifacts/nearest_station2.png)
+![Plot 3](artifacts/nearest_park2.png) ![Plot 4](artifacts/nearest_station2.png)
 
 
 
