@@ -1,88 +1,127 @@
-from flask import (Flask, render_template, flash,
-                    request, jsonify, Markup)
-import logging, io, os, sys
 import pandas as pd
 import numpy as np
-from modules.custom_transformers import *
-from sklearn.ensemble import GradientBoostingRegressor
-import scipy
-import pickle
+import mapping as mp
+import model 
+import random
+import os
+import folium
+import shutil
+import time
+from folium import plugins
+import flask
+from flask import Flask, render_template, request, redirect, session, url_for, make_response
 
 
 
-# EB looks for an 'application' callable by default.
-application = Flask(__name__)
+class MyFlask(flask.Flask):
+    def get_send_file_max_age(self, name):
+        if name.lower().endswith('map.html'):
+            return 0
+        return flask.Flask.get_send_file_max_age(self, name)
 
-np.set_printoptions(precision=2)
+app = MyFlask(__name__)
 
-#Model features
-gbm_model = None
-features = ['neighbourhood_group', 'new_neighbourhood', 'room_type', 'minimum_nights', 'number_of_reviews', 'number_of_reviews_ltm',
-         'calculated_host_listing_count', 'availability_365'] 
+app.secret_key = 'NYC Airbnb'
 
-# need to import gbm and mappings
-@application.before_first_request
-def startup():
 
-    global gbm_model
+df = pd.read_csv("../data/newnh_airbnb_2021.csv")
+
+@app.route('/')
+def main():
+    return render_template('index.html')
+
+
+@app.route('/about')
+def about():
+    title = 'violet2 - '
+    return render_template('about.html', title=title)
+
+
+
+@app.route('/host')
+def host():
+    session['title'] = 'host - '
+    session['customer'] = 'host'
+    return render_template('host.html', title=session['title'], customer=session['customer'])
+
+
+@app.route('/host/price', methods=['GET', 'POST'])
+def hostprice():
+    session['title'] = 'price estimation - '
+    session['customer'] = 'host'
+    return render_template('price.html', title=session['title'], customer=session['customer'], neighbourhood_dict=mp.id_neighborhood_dict,
+                           neighbourhood_group_dict=mp.id_neighbourhood_group_dict, room_type_dict=mp.id_room_type_dict)
+
+
+
+@app.route('/host/map', methods=['GET', 'POST'])
+def hostmap():
+
+    session['title'] = 'map - '
+    session['customer'] = 'host'
     
-    # gbm model
-    with open('static/predict_wnames.ipynb', 'rb') as f:
-        gbm_model = pickle.load(f)
-
-        # min, max, default values to categories mapping dictionary
-    with open('static/Dictionaries.pkl', 'rb') as f:
-        default_dict,min_dict, max_dict, default_dict_mapped = pickle.load(f)
-
-    # Encoded values to categories mapping dictionary
-    with open('static/Encoded_dicts.pkl', 'rb') as f:
-        le_neighbourhood_group_Encdict,le_new_neighbourhood_Encdict,le_room_type_Encdict = pickle.load(f)
+    return render_template('mapnearby.html', title=session['title'], customer=session['customer'], neighbourhood_group_dict=mp.id_neighbourhood_group_dict)
 
 
-@application.errorhandler(500)
-def server_error(e):
-    logging.exception('some eror')
-    return """
-    And internal error <pre>{}</pre>
-    """.format(e), 500
+@app.route('/host/map/view', methods=['GET', 'POST'])
+def hostmapview():
 
-@application.route("/", methods=['POST', 'GET'])
-def index():
-     # Encoded values to categories mapping dictionary
-      # Encoded values to categories mapping dictionary
-    with open('static/Encoded_dicts.pkl', 'rb') as f:
-        le_neighbourhood_group_Encdict,le_new_neighbourhood_Encdict,le_room_type_Encdict= pickle.load(f)
+    session['title'] = 'map - '
+    session['customer'] = 'host'
 
+    if request.method == 'POST':
+        map_data = request.form.to_dict(flat=True)
+        session['map_data'] = map_data
 
-    return render_template( 'index.html',le_neighbourhood_group_Encdict = le_neighbourhood_group_Encdict,le_new_neighbourhood_Encdict = le_new_neighbourhood_Encdict, le_room_type_Encdict = le_room_type_Encdict, price_prediction = 17.09)
+    if (session['map_data']['city'][0]!='Select'):
+        CityId = int(session['map_data']['city'])
 
-
-
-# accepts either deafult values or user inputs and outputs prediction 
-@application.route('/background_process', methods=['POST', 'GET'])
-def background_process():
-    Neighbourhood_Group = request.args.get('neighbourhood_group')                                        
-    New_Neighbourhood = request.args.get('new_neighbourhood')                                        
-    Room_Type = request.args.get('room_type')
-    Minimum_nights = float(request.args.get('minimum_nights'))                                          
-    Number_of_Reviews = float(request.args.get('number_of_reviews'))                
-    Number_of_Reviews_ltm = float(request.args.get('number_of_reviews_ltm'))
-    Calculated_Host_Listing_Count = float(request.args.get('calculated_host_listing_count'))
-    Availability_365 = float(request.args.get('availability_365'))
+        map = pre.make_map(df, CityId)
+        map.save('static/maps/map.html')
+    else:
+        CityId = 100
+    
+    return render_template('mapnearbyview.html', title=session['title'], customer=session['customer'],
+                            city_dict=mp.id_city_dict, city_name=mp.id_city_dict[CityId], link=mp.nearby_id_link_dict[CityId],
+                            label=mp.nearby_id_name_dict[CityId])
 
 
-	# values stroed in list later to be passed as df while prediction
-    user_vals = [Neighbourhood_Group, New_Neighbourhood, Room_Type, Minimum_nights, Number_of_Reviews, 
-        Number_of_Reviews_ltm, Calculated_Host_Listing_Count, Availability_365]
+@app.route('/host/price/result', methods=['GET', 'POST'])
+@app.route('/tourist/price/result', methods=['GET', 'POST'])
+def pricepredict():
+
+    if session['customer'] == 'host':
+        session['title'] = 'smart price estimation - '
+    else:
+        session['title'] = 'price prediction - '
+
+    if request.method == 'POST':
+        form_data = request.form.to_dict(flat=True)
+        session['form_data'] = form_data
+
+        CityId = int(form_data['city'])
+        pred = pre.regressor(form_data, CityId, reg)
+        pred_total = pred*(int(form_data['minimum_nights']))
+        
+        map = pre.make_map(df, CityId)
+        map.save('static/maps/map.html')
+
+    return render_template('priceresult.html', customer=session['customer'], title=session['title'], city_dict=mp.id_city_dict,
+                           popularity_dict=mp.id_pop_dict, form_data=form_data, city=mp.id_city_dict[int(form_data['city'])],
+                           popu=mp.id_pop_dict[int(form_data['popularity'][0])], room_type_dict=mp.id_room_type_dict,
+                           roomt=mp.id_room_type_dict[int(form_data['room_type'][0])], current_time=int(time.time()),
+                           link=mp.nearby_id_link_dict[CityId], label=mp.nearby_id_name_dict[CityId], pred=pred, pred_total=pred_total)
 
 
-    x_test_tmp = pd.DataFrame([user_vals],columns = features)
-    float_formatter = "{:.2f}".format
+@app.route('/data')
+def data():
+    session['title'] = 'data - '
+    session['customer'] = 'data'
+    return render_template('data.html', title=session['title'], customer=session['customer'])
 
-    pred = float_formatter(np.exp(gbm_model.predict(x_test_tmp[features])[0]))
-    return jsonify({'price_prediction':pred})
 
-# when running app locally
 if __name__ == '__main__':
-    application.debug = False
-    application.run(host='0.0.0.0')
+    app.run()
+© 2022 GitHub, Inc.
+Terms
+Privacy
