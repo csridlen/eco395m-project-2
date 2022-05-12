@@ -41,8 +41,7 @@ An issue that we found initially is that the neighborhoods as defined in the Ins
 
 The updated neighborhoods divide up the city into smaller and more groups. Below is a map of average Airbnb Prices grouped by neighborhoods.
 
-![Plot 1](artifacts/neighbourhood_price_2021.png) 
-![Plot 2](artifacts/neighbourhood_price_2021_2.png)
+![Plot 1](artifacts/neighbourhood_price_2021_1.png) ![Plot 2](artifacts/neighbourhood_price_2021_2.png)
 
 Refer to [here](artifacts/neighbourhood_price_2021_2.html) to see an interative plot with actual prices per neighborhood.
 
@@ -51,8 +50,7 @@ We decided to use proximiity to subway stations and parks as a predictor in Airb
 
 Plots below show the distance to the nearest [park](artifacts/nearest_park2/html) and [station](artifacts/nearest_station_2.html). 
 
-![Plot 3](artifacts/artifacts/nearest_park_2.png) 
-![Plot 4](artifacts/artifacts/nearest_station_2.png)
+![Plot 3](artifacts/artifacts/nearest_park2.png) ![Plot 4](artifacts/artifacts/nearest_station2.png)
 
 
 
