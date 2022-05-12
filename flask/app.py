@@ -56,39 +56,38 @@ def hostprice():
 
 
 
-@app.route('/host/map', methods=['GET', 'POST'])
-def hostmap():
+# @app.route('/host/map', methods=['GET', 'POST'])
+# def hostmap():
 
-    session['title'] = 'map - '
-    session['customer'] = 'host'
+#     session['title'] = 'map - '
+#     session['customer'] = 'host'
     
-    return render_template('mapnearby.html', title=session['title'], customer=session['customer'], neighbourhood_group_dict=mp.id_neighbourhood_group_dict)
+#     return render_template('mapnearby.html', title=session['title'], customer=session['customer'], neighbourhood_group_dict=mp.id_neighbourhood_group_dict)
 
 
-@app.route('/host/map/view', methods=['GET', 'POST'])
-def hostmapview():
+# @app.route('/host/map/view', methods=['GET', 'POST'])
+# def hostmapview():
 
-    session['title'] = 'map - '
-    session['customer'] = 'host'
+#     session['title'] = 'map - '
+#     session['customer'] = 'host'
 
-    if request.method == 'POST':
-        map_data = request.form.to_dict(flat=True)
-        session['map_data'] = map_data
+#     if request.method == 'POST':
+#         map_data = request.form.to_dict(flat=True)
+#         session['map_data'] = map_data
 
-    if (session['map_data']['neighbourhood_group'][0]!='Select'):
-        NeighbourhoodGroupId = int(session['map_data']['neighbourhood_group'])
+#     if (session['map_data']['neighbourhood_group'][0]!='Select'):
+#         NeighbourhoodGroupId = int(session['map_data']['neighbourhood_group'])
 
-        map = pre.make_map(X, NeighbourhoodGroupId)
-        map.save('static/maps/map.html')
-    else:
-        NeighbourhoodGroupId = 2
+#         map = pre.make_map(X, NeighbourhoodGroupId)
+#         map.save('static/maps/map.html')
+#     else:
+#         NeighbourhoodGroupId = 2
     
-    return render_template('mapnearbyview.html', title=session['title'], customer=session['customer'],
-                            neighbourhood_group_dict=mp.id_neighbourhood_group_dict, neighbourhood_group=mp.id_neighbourhood_group_dict[NeighbourhoodGroupId])
+#     return render_template('mapnearbyview.html', title=session['title'], customer=session['customer'],
+#                             neighbourhood_group_dict=mp.id_neighbourhood_group_dict, neighbourhood_group=mp.id_neighbourhood_group_dict[NeighbourhoodGroupId])
 
 
 @app.route('/host/price/result', methods=['GET', 'POST'])
-@app.route('/tourist/price/result', methods=['GET', 'POST'])
 def pricepredict():
 
     if session['customer'] == 'host':
@@ -104,8 +103,8 @@ def pricepredict():
         pred = pre.regressor(form_data, NeighbourhoodGroupId, gbm_model)
         pred_total = pred*(int(form_data['minimum_nights']))
         
-        map = pre.make_map(X, NeighbourhoodGroupId)
-        map.save('static/maps/map.html')
+        # map = pre.make_map(X, NeighbourhoodGroupId)
+        # map.save('static/maps/map.html')
 
     return render_template('priceresult.html', customer=session['customer'], title=session['title'], neighbourhood_group_dict=mp.id_neighbourhood_group_dict,
                            form_data=form_data, neighbourhood_group=mp.id_neighbourhood_group_dict[int(form_data['neighbourhood_group'])],
