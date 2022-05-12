@@ -41,20 +41,22 @@ An issue that we found initially is that the neighborhoods as defined in the Ins
 
 The updated neighborhoods divide up the city into smaller and more groups. Below is a map of average Airbnb Prices grouped by neighborhoods.
 
-![Plot 1](artifacts/neighbourhood_price_2021.png) ![Plot 2](artifacts/neighbourhood_price_2021_2.png)
+![Plot 1](artifacts/neighbourhood_price_2021.png) 
+![Plot 2](artifacts/neighbourhood_price_2021_2.png)
 
 Refer to [here](artifacts/neighbourhood_price_2021_2.html) to see an interative plot with actual prices per neighborhood.
 
-## Subway station and park zones
+### Subway station and park zones
 We decided to use proximiity to subway stations and parks as a predictor in Airbnb prices. For each Airbnb listing, we calculated the distance to the nearest subway and park. We calculated distance using the Manhattan distance formula (Also known as taxicab geomery and named after the borough of course). This distance calculation is different from a traditional distance formula as it's the distance that would be used to for an individual that might drive or walk to a destination rather than distance that would cut through lots and buildings.
 
 Plots below show the distance to the nearest [park](artifacts/nearest_park2/html) and [station](artifacts/nearest_station_2.html). 
 
-![Plot 3](artifacts/artifacts/nearest_park_2.png) ![Plot 4](artifacts/artifacts/nearest_station_2.png)
+![Plot 3](artifacts/artifacts/nearest_park_2.png) 
+![Plot 4](artifacts/artifacts/nearest_station_2.png)
 
 
 
-## Data Dictionary 
+## #Data Dictionary 
 
 [airbnb_listings_2021](https://raw.githubusercontent.com/csridlen/eco395m-project-2/main/data/airbnb_listings_2021.csv)
 
