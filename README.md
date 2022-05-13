@@ -80,6 +80,15 @@ Plots below show the distance to the nearest [park](https://htmlpreview.github.i
 
 ![Plot 8](artifacts/nearest_station_2.png)
 
+## Preliminary Analysis: Regression Analysis
+
+We first run a simple linear regression of airbnb price on neighbourhood and on borough separately to see which basic geographic division is more helpful, we find that neighbourhoods are. We then add other controls and test a few different combinations and find that the best model contains neighbourhoods, different review scores, subway and park linear distance, and a feature like number of guests accommodated / beds that serve as a good proxy of relative size.
+
+Our best model has an R-squared of ~0.47 and a RMSE of about 100. While this is much higher than we'd have expected based on early stage analysis, the predictive power of the model is not amazing given the error and range og typical airbnb prices. Consequently we use a Rainbow test for linearity to check whether a linear model is the best choice here, and reject the hypothesis that it is. This motivates analysis using a different model such as GBM
+
+Reproducibility: All is found in ![this notebook](code/Regression_Analysis.ipynb). This includes step by step detailed instructions and comments.
+
+
 ## #Data Dictionary 
 
 [airbnb_listings_2021](https://raw.githubusercontent.com/csridlen/eco395m-project-2/main/data/airbnb_listings_2021.csv)
@@ -92,6 +101,8 @@ Plots below show the distance to the nearest [park](https://htmlpreview.github.i
 ## Methodology
 
 ### Data Cleaning Process
+
+
 
 ## Analysis/Findings
 
