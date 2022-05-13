@@ -130,5 +130,5 @@ dmypy.json
 
 .DS_Store
 
-data/airbnb-listings.json
+.vscode/
 
