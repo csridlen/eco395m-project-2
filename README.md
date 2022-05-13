@@ -41,8 +41,6 @@ In the dataset from Inside Airbnb, each row is an individual airbnb listing and 
 
 The GeoJSON data from the NYC OpenData portal contain coordinates that are used to form the geometry for maps. The subway station data are individual coordinate points for each subway station in the city. The neighborhoods and parks data uses multiple coordinates to create an area or “zone” of where the neighborhoods and parks are located.
 
-### Data Extensions
-
 ## Preliminary Analysis: Summary Statistics
 
 We did some preliminary analysis and visualizations in order to better understand our data. Below you can see some of those results:
