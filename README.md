@@ -55,7 +55,7 @@ We also show top 5 neighbourhoods by room type based on calculated host listings
 
 We also created a boxplot showing airbnb prices for each neighborhood group based on room type. We can see from the boxplot that Manhattan has the highest airbnb prices among neighbourhood, followed by Brooklyn and Queens. In all instances, entire home/apartments are more expensive than private rooms and shared rooms. 
 
-![Plot 3](artifacts/boxplot.png)
+![Plot 3](artifacts/Boxplot.png)
 
 The heatmap below shows airbnb prices in New York City based on latitute and longitude. 
 
@@ -96,11 +96,6 @@ We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encode
 
 ## Dashboard Creation
 In order to create an interactive Airbnb price prediction platform, we implement a Streamlit dashboard. This dashboard takes inputs for various Airbnb features such as bedrooms, beds, and number of nights. The dashboard takes these inputs and enters them into our gradient-boosted model for prediced prices. Then, the dasboard user can click the "predict" button and receive an outputed price-per-night estimate. This dashboard can be useful for both aribnb customers and hosts. Customers can use this dashboard to compare active listings to our model's predicted price, and hosts can explore what price might be most fitting for their particular listing. See [gbm_streamlit.py] for the structure and implementation ofthe Streamlit dashboard. 
-
-
-
-### Data Cleaning Process
-
 
 
 ## Analysis/Findings
