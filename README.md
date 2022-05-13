@@ -29,7 +29,7 @@ Allowing airbnb hosts to predict a reasonable price for their airbnb listing bas
 
 The main source of data contains Airbnb data for the city of New York for the year 2021. The data was made available by [Inside Airbnb](http://insideairbnb.com/get-the-data/). We downloaded the three scraped datasets from this website. They were scraped in June, September, and December. They are in our repository.
 
-We also used data published by New York City's various institutions including locations of [subway stations](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49) and [parks](https://data.cityofnewyork.us/City-Government/ARCHIVED-Parks-Zones/rjaj-zgq7) as well as neighboorhood areas.
+We also used data published by New York City's various institutions including locations of [subway stations](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49) and [parks](https://data.cityofnewyork.us/City-Government/ARCHIVED-Parks-Zones/rjaj-zgq7) as well as [neighboorhood](https://data.cityofnewyork.us/City-Government/2020-Neighborhood-Tabulation-Areas-NTAs-Tabular/9nt8-h7nd) areas.
 
 ### Data Cleaning
 We first cleaned the data using the [Aggregate Listings Data.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/cleaning_code_from_lauri/1.%20Download%20and%20compile%20data/Aggregate%20Listings%20Data.ipynb) [1st_stage_panel_data_cleaning.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/cleaning_code_from_lauri/2.%20Clean%20data/1st_stage_panel_data_cleaning.ipynb) and put our dataset into the sql database, which we got from [this repo](https://github.com/kytola/CleanAirbnb).
@@ -37,11 +37,9 @@ The first one concatenates the datasets we obtained and selects the coulmns of i
 The second one destrings the price, formats the dates, fills in NA values, calculates the average longitude and latitude (as Airbnb does not provide exact locations for privacy), flags the month where a listing is first hosted, flags the month where a listing is last hosted, calculates cumulative listings for a given host, calculates other summary statistics about host holdings, identify hotels in the data, calculate listings per neighborhood, and drops observations where property price is below 0.1 percentile or above 99.9 percentile, property never lists a day of availability, and minimum nights is 30 days or more (no longer a short-term rental).
 
 ### Data Summary
-In the dataset from Inside Airbnb, each row is an individual airbnb listing and the columns are characteristics of listings such as price, reviews, and availability. Also included are details about the host such as response time, count of other listings, and an indicator for super host.
+In the dataset from Inside Airbnb, each row is an individual airbnb listing and the columns are characteristics of listings such as price, reviews, and availability. Also included are details about the host such as response time, count of other listings, and an indicator for super host. The limitations of the data are that it doesn't include square feet of the property, which we believe could be a significant factor for the price.
 
-The GeoJSON data from the NYC OpenData portal contain coordinates that are used to form the geometry for maps. The [subway station data](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49) are individual coordinate points for each subway station in the city. The [neighborhoods](https://data.cityofnewyork.us/City-Government/2020-Neighborhood-Tabulation-Areas-NTAs-Tabular/9nt8-h7nd) and [parks](https://data.cityofnewyork.us/City-Government/Parks-Zones/4j29-i5ry) data uses multiple coordinates to create an area or “zone” of where the neighborhoods and parks are located.
-
-### Data Extensions
+The GeoJSON data from the NYC OpenData portal contain coordinates that are used to form the geometry for maps. The subway station data are individual coordinate points for each subway station in the city. The neighborhoods and parks data uses multiple coordinates to create an area or “zone” of where the neighborhoods and parks are located.
 
 ## Preliminary Analysis: Summary Statistics
 
@@ -57,7 +55,7 @@ We also show top 5 neighbourhoods by room type based on calculated host listings
 
 We also created a boxplot showing airbnb prices for each neighborhood group based on room type. We can see from the boxplot that Manhattan has the highest airbnb prices among neighbourhood, followed by Brooklyn and Queens. In all instances, entire home/apartments are more expensive than private rooms and shared rooms. 
 
-![Plot 3](artifacts/boxplot.png)
+![Plot 3](artifacts/Boxplot.png)
 
 The heatmap below shows airbnb prices in New York City based on latitute and longitude. 
 
@@ -86,7 +84,15 @@ Plots below show the distance to the nearest [park](https://htmlpreview.github.i
 
 ![Plot 8](artifacts/nearest_station_2.png)
 
-## Preliminary Analysis: Regression Analysis
+
+## Methodology
+We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/code/predict.ipynb). We also exctract variable importance from the gradient boosted model to narrow down for sellers which variables are most important. ![varimp](artifacts/varimp.png)
+
+## Dashboard Creation
+In order to create an interactive Airbnb price prediction platform, we implement a Streamlit dashboard. This dashboard takes inputs for various Airbnb features such as bedrooms, beds, and number of nights. The dashboard takes these inputs and enters them into our gradient-boosted model for prediced prices. Then, the dasboard user can click the "predict" button and receive an outputed price-per-night estimate. This dashboard can be useful for both aribnb customers and hosts. Customers can use this dashboard to compare active listings to our model's predicted price, and hosts can explore what price might be most fitting for their particular listing. See [gbm_streamlit.py] for the structure and implementation ofthe Streamlit dashboard. 
+
+
+## Analysis/Findings
 
 We first run a simple linear regression of airbnb price on neighbourhood and on borough separately to see which basic geographic division is more helpful, we find that neighbourhoods are. We then add other controls and test a few different combinations and find that the best model contains neighbourhoods, different review scores, subway and park linear distance, and a feature like number of guests accommodated / beds that serve as a good proxy of relative size.
 
@@ -94,33 +100,9 @@ Our best model has an R-squared of ~0.47 and a RMSE of about 100. While this is 
 
 Reproducibility: All is found in ![this notebook](code/Regression_Analysis.ipynb). This includes step by step detailed instructions and comments.
 
+In order to draw comparisons, we also build a lasso model. To perform this analysis we first create a list of alphas (the parameter which balances the amount of emphasis given to minimizing RSS vs minimizing sum of square of coefficients) to tune. We find the best value of alpha of 0.007. This is very close to zero, so we could expect to receive very similar results/coefficients to the linear regression. In order to visualize the residuals of the lasso model, we plot the residuals against the predicted values. The graph below shows the distribution of these residuals. 
 
-## #Data Dictionary 
-
-[airbnb_listings_2021](https://raw.githubusercontent.com/csridlen/eco395m-project-2/main/data/airbnb_listings_2021.csv)
-
-
-## Database
-
-## Methodology
-We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/code/predict.ipynb). We also exctract variable importance from the gradient boosted model to narrow down for sellers which variables are most important. ![varimp](artifacts/varimp.png)
-
-## Dashboard Creation
-
-
-
-
-### Data Cleaning Process
-
-
-
-## Analysis/Findings
-
-Before we perform any predictive models we check for multicollinearity in the data to make sure our coefficients are stable and do not result in high standard errors. Gladly, the VIFs do not indicate that our model has severe multicollinearity as they all are very close to 1. Next, we create train and test data for our linear regression, and check for the model performance based on RMSE, MSE, R2 and adjusted R2. Both the MSE and the RMSE are relatively low. However, the R2 and the adjusted R2 are also low with both an R2 and Adj R2 of 0.243, which indicates that the linear regression does not do a great job at predicting future prices. The results from the regression can be seen in the summary table below: 
-
-![Plot 9](artifacts/ols_regression.png)
-
-In order to draw comparisons, we also build a lasso model. Although lasso is an extension of the linear regression, in general we would expect that the former would perform better than the latter since the former trades an increase in bias for a decrease in variance. To perform this analysis we first create a list of alphas (the parameter which balances the amount of emphasis given to minimizing RSS vs minimizing sum of square of coefficients) to tune. We find the best value of alpha of 0.007. This is very close to zero, so we could expect to receive very similar results/coefficients to the linear regression. In order to visualize the residuals of the lasso model, we plot the residuals against the predicted values. The graph below shows the distribution of these residuals. 
+Reproducibility: All is found in ![this notebook](code/Lasso_model.ipynb). This includes step by step detailed instructions and comments.
 
 ![Plot 10](artifacts/lasso_residuals.png)
 
@@ -141,7 +123,7 @@ With an R2 of 0.245 lasso performs seldom better than the linear model, with an 
 First, get the datasets.
 Put the .csv.gz files in the directory named *united-states_new-york-city* under *cleaning_code_from_lauri/0. Raw Data*.
 Run *1. Download and compile data/Aggregate Listings Data.ipynb*. This creates *NYC_Data_wideALL_2021.csv.gz* and *NYC_Data_longALL_2021.csv.gz* in *1. Download and compile data*.
-Copy the file `demo.env` to `.env` and modify it by providing the credentials theaccordingly, both in */code/* and 
+Copy the file `demo.env` to `.env` and modify it by providing the credentials accordingly, both in */code/* and 
 *cleaning_code_from_lauri/2. Clean data/*.
 Then, run *2. Clean data/1st_stage_panel_data_cleaning.ipynb*.
 This creates *NYC_1stStageClean_2021* in *Saved data* and puts in into the SQL database (We used Postgres).
@@ -150,9 +132,16 @@ maps.ipynb spits out *data/newnh_airbnb_2021.csv* and maps.
 neighborhood_distances.py then uses it to spit out *cleaned_data_updated.csv*.
 This is used for baseline analyses. We use the entire dataset we have for the predictive model building.
 *analysis_visualizations.ipynb* gives you the graphs.
-
-(model building and dashboard building description)
+To build our predict models, we use *readtable.py* to load data into *word2vec_.ipynb* and *predict.ipynb*. These files build our word2vec and GBM price predictive models. 
+Then, import the functions from *readtable.py* and *predict.ipynb* into *gbm_streamlit.py* to create a dashboard from the GBM model. If using a GCP instance, make sure your firewall settings allow the corresponding connection.
 
 ## Extensions and Limitations
+Our dashboard takes a lot of time to run because implementing the gradient boosted model. It would be useful to develop a 
+more efficient model for this. Plus, if we could use more amount of data, including the 2015-2019 ones we tried to work on,
+the performace of the prediction would improve.
 
 ## Appendix
+Below are maps for distances created using the Haversine distance formula. 
+
+![Plot 13](artifacts/nearest_park.png)
+![Plot 14](artifacts/nearest_station.png)
