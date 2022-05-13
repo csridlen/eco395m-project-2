@@ -20,7 +20,10 @@ Team Members:
 
 ## Introduction
 
-We use a combination of explanatory data analysis, model prediction and machine learning to predict Airbnb rental prices based on 17 key variables including room type and neighbourhood group. We build trained models, including a linear regression and a lasso regression. We compare the performance of models based on the RMSE (the standard deviation of the residuals/prediction errors). 
+We use a combination of explanatory data analysis, model prediction and machine learning to predict Airbnb rental prices based on variables found from [insideairbnb.com](insideairbnb.com). We build trained models, including a linear regression and a lasso regression. The highest performing analysis was the gradient boosted tree model. We compare the performance of models based on the RMSE (the standard deviation of the residuals/prediction errors). We then build an interface in Streamlit to present our results.
+
+### The goal
+Allowing airbnb hosts to predict a reasonable price for their airbnb listing based on certain qualities.
 
 ## Data Collection
 
@@ -97,7 +100,7 @@ Reproducibility: All is found in ![this notebook](code/Regression_Analysis.ipynb
 ## Database
 
 ## Methodology
-We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/code/predict.ipynb)
+We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/code/predict.ipynb). We also exctract variable importance plots, and you can see them here [varimp]("https://github.com/csridlen/eco395m-project-2/blob/main/artifacts/varimp.png")
 
 ## Dashboard Creation
 
