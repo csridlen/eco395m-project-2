@@ -84,15 +84,6 @@ Plots below show the distance to the nearest [park](https://htmlpreview.github.i
 
 ![Plot 8](artifacts/nearest_station_2.png)
 
-## Preliminary Analysis: Regression Analysis
-
-We first run a simple linear regression of airbnb price on neighbourhood and on borough separately to see which basic geographic division is more helpful, we find that neighbourhoods are. We then add other controls and test a few different combinations and find that the best model contains neighbourhoods, different review scores, subway and park linear distance, and a feature like number of guests accommodated / beds that serve as a good proxy of relative size.
-
-Our best model has an R-squared of ~0.47 and a RMSE of about 100. While this is much higher than we'd have expected based on early stage analysis, the predictive power of the model is not amazing given the error and range og typical airbnb prices. Consequently we use a Rainbow test for linearity to check whether a linear model is the best choice here, and reject the hypothesis that it is. This motivates analysis using a different model such as GBM
-
-Reproducibility: All is found in ![this notebook](code/Regression_Analysis.ipynb). This includes step by step detailed instructions and comments.
-
-
 ## #Data Dictionary 
 
 [airbnb_listings_2021](https://raw.githubusercontent.com/csridlen/eco395m-project-2/main/data/airbnb_listings_2021.csv)
@@ -114,11 +105,15 @@ In order to create an interactive Airbnb price prediction platform, we implement
 
 ## Analysis/Findings
 
-Before we perform any predictive models we check for multicollinearity in the data to make sure our coefficients are stable and do not result in high standard errors. Gladly, the VIFs do not indicate that our model has severe multicollinearity as they all are very close to 1. Next, we create train and test data for our linear regression, and check for the model performance based on RMSE, MSE, R2 and adjusted R2. Both the MSE and the RMSE are relatively low. However, the R2 and the adjusted R2 are also low with both an R2 and Adj R2 of 0.243, which indicates that the linear regression does not do a great job at predicting future prices. The results from the regression can be seen in the summary table below: 
+We first run a simple linear regression of airbnb price on neighbourhood and on borough separately to see which basic geographic division is more helpful, we find that neighbourhoods are. We then add other controls and test a few different combinations and find that the best model contains neighbourhoods, different review scores, subway and park linear distance, and a feature like number of guests accommodated / beds that serve as a good proxy of relative size.
 
-![Plot 9](artifacts/ols_regression.png)
+Our best model has an R-squared of ~0.47 and a RMSE of about 100. While this is much higher than we'd have expected based on early stage analysis, the predictive power of the model is not amazing given the error and range og typical airbnb prices. Consequently we use a Rainbow test for linearity to check whether a linear model is the best choice here, and reject the hypothesis that it is. This motivates analysis using a different model such as GBM
 
-In order to draw comparisons, we also build a lasso model. Although lasso is an extension of the linear regression, in general we would expect that the former would perform better than the latter since the former trades an increase in bias for a decrease in variance. To perform this analysis we first create a list of alphas (the parameter which balances the amount of emphasis given to minimizing RSS vs minimizing sum of square of coefficients) to tune. We find the best value of alpha of 0.007. This is very close to zero, so we could expect to receive very similar results/coefficients to the linear regression. In order to visualize the residuals of the lasso model, we plot the residuals against the predicted values. The graph below shows the distribution of these residuals. 
+Reproducibility: All is found in ![this notebook](code/Regression_Analysis.ipynb). This includes step by step detailed instructions and comments.
+
+In order to draw comparisons, we also build a lasso model. To perform this analysis we first create a list of alphas (the parameter which balances the amount of emphasis given to minimizing RSS vs minimizing sum of square of coefficients) to tune. We find the best value of alpha of 0.007. This is very close to zero, so we could expect to receive very similar results/coefficients to the linear regression. In order to visualize the residuals of the lasso model, we plot the residuals against the predicted values. The graph below shows the distribution of these residuals. 
+
+Reproducibility: All is found in ![this notebook](code/Lasso_model.ipynb). This includes step by step detailed instructions and comments.
 
 ![Plot 10](artifacts/lasso_residuals.png)
 
