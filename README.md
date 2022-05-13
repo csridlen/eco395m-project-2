@@ -37,6 +37,9 @@ The first one concatenates the datasets we obtained and selects the coulmns of i
 The second one destrings the price, formats the dates, fills in NA values, calculates the average longitude and latitude (as Airbnb does not provide exact locations for privacy), flags the month where a listing is first hosted, flags the month where a listing is last hosted, calculates cumulative listings for a given host, calculates other summary statistics about host holdings, identify hotels in the data, calculate listings per neighborhood, and drops observations where property price is below 0.1 percentile or above 99.9 percentile, property never lists a day of availability, and minimum nights is 30 days or more (no longer a short-term rental).
 
 ### Data Summary
+In the dataset from Inside Airbnb, each row is an individual airbnb listing and the columns are characteristics of listings such as price, reviews, and availability. Also included are details about the host such as response time, count of other listings, and an indicator for super host.
+
+The GeoJSON data from the NYC OpenData portal contain coordinates that are used to form the geometry for maps. The [subway station data](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49) are individual coordinate points for each subway station in the city. The [neighborhoods](https://data.cityofnewyork.us/City-Government/2020-Neighborhood-Tabulation-Areas-NTAs-Tabular/9nt8-h7nd) and [parks](https://data.cityofnewyork.us/City-Government/Parks-Zones/4j29-i5ry) data uses multiple coordinates to create an area or “zone” of where the neighborhoods and parks are located.
 
 ### Data Extensions
 
