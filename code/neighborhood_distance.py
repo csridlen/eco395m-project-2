@@ -14,70 +14,74 @@ parks_map = json.load(open("../data/Parks_Zones.geojson"))
 lauri_data["new_neighbourhood"] = ""
 
 for i, row in lauri_data.iterrows():
-    for feature in nycmap2020['features']:
-        polygon = shape(feature['geometry'])
-        if polygon.contains(Point(row["avg_lon"],row["avg_lat"])):
+    for feature in nycmap2020["features"]:
+        polygon = shape(feature["geometry"])
+        if polygon.contains(Point(row["avg_lon"], row["avg_lat"])):
             lauri_data["new_neighbourhood"][i] = feature["properties"]["ntaname"]
-           
 
 
 # retrieve latitude and longitude of each station
 station_lat = []
 station_lon = []
-for n in station_map['features']:
-    station_lat.append(n['geometry']['coordinates'][1])
-    station_lon.append(n['geometry']['coordinates'][0])
+for n in station_map["features"]:
+    station_lat.append(n["geometry"]["coordinates"][1])
+    station_lon.append(n["geometry"]["coordinates"][0])
 
 stations = pd.DataFrame({"latitude": station_lat, "longitude": station_lon})
 
 
 # convert latitude and longitude to radians and zip them into coordinates
-stations['coordinate'] = list(zip(stations['latitude']*math.pi / 180, stations['longitude']*math.pi / 180))
-lauri_data['coordinate'] = list(zip(lauri_data['avg_lat']*math.pi / 180, lauri_data['avg_lon']*math.pi / 180))
+stations["coordinate"] = list(
+    zip(stations["latitude"] * math.pi / 180, stations["longitude"] * math.pi / 180)
+)
+lauri_data["coordinate"] = list(
+    zip(lauri_data["avg_lat"] * math.pi / 180, lauri_data["avg_lon"] * math.pi / 180)
+)
 
-station_location = np.asarray(list(stations['coordinate']))
+station_location = np.asarray(list(stations["coordinate"]))
 tree = neighbors.BallTree(station_location, metric="haversine")
 
-airbnb_location = np.asarray(list(lauri_data['coordinate']))
+airbnb_location = np.asarray(list(lauri_data["coordinate"]))
 station_dist, _ = tree.query(X=airbnb_location, k=1)
-lauri_data['station_dist'] = station_dist
-lauri_data['station_dist'] = lauri_data['station_dist'].apply(lambda x: x*3960)
+lauri_data["station_dist"] = station_dist
+lauri_data["station_dist"] = lauri_data["station_dist"].apply(lambda x: x * 3960)
 
 # in new york of all places (but for walksable streets in general), manhattan distance would be more applicable
 tree2 = neighbors.BallTree(station_location, metric="manhattan")
 station_dist2, _ = tree2.query(X=airbnb_location, k=1)
-lauri_data['station_dist2'] = station_dist2
-lauri_data['station_dist2'] = lauri_data['station_dist2'].apply(lambda x: x*3960)
+lauri_data["station_dist2"] = station_dist2
+lauri_data["station_dist2"] = lauri_data["station_dist2"].apply(lambda x: x * 3960)
 
 park_lat = []
 park_lon = []
 
 # get each latitude longitude from the polygons within each park
-for p in parks_map['features']:
-    for c in p['geometry']['coordinates'][0][0]:
+for p in parks_map["features"]:
+    for c in p["geometry"]["coordinates"][0][0]:
         park_lat.append(c[1])
         park_lon.append(c[0])
-    
+
 parks = pd.DataFrame({"latitude": park_lat, "longitude": park_lon})
 
 
 # convert latitude and longitude to radians and zip them into coordinates
-parks['coordinate'] = list(zip(parks['latitude']*math.pi / 180, parks['longitude']*math.pi / 180))
+parks["coordinate"] = list(
+    zip(parks["latitude"] * math.pi / 180, parks["longitude"] * math.pi / 180)
+)
 
 # calculate distance between each coordinate
 
-parks_location = np.asarray(list(parks['coordinate']))
+parks_location = np.asarray(list(parks["coordinate"]))
 tree3 = neighbors.BallTree(parks_location, metric="haversine")
 
 park_dist, _ = tree3.query(X=airbnb_location, k=1)
-lauri_data['park_dist'] = park_dist
-lauri_data['park_dist'] = lauri_data['park_dist'].apply(lambda x: x*3960)
+lauri_data["park_dist"] = park_dist
+lauri_data["park_dist"] = lauri_data["park_dist"].apply(lambda x: x * 3960)
 
 # in new york of all places (but for walksable streets in general), manhattan distance would be more applicable
 tree4 = neighbors.BallTree(parks_location, metric="manhattan")
 park_dist2, _ = tree4.query(X=airbnb_location, k=1)
-lauri_data['park_dist2'] = park_dist2
-lauri_data['park_dist2'] = lauri_data['park_dist2'].apply(lambda x: x*3960)
+lauri_data["park_dist2"] = park_dist2
+lauri_data["park_dist2"] = lauri_data["park_dist2"].apply(lambda x: x * 3960)
 
-#lauri_data.to_csv("cleaned_data_updated.csv")
-
+lauri_data.to_csv("cleaned_data_updated.csv")
