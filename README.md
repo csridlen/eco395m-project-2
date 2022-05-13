@@ -29,6 +29,13 @@ The main source of data contains Airbnb data for the city of New York for the ye
 We also used data published by New York City's various institutions including locations of [subway stations](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49) and [parks](https://data.cityofnewyork.us/City-Government/ARCHIVED-Parks-Zones/rjaj-zgq7) as well as neighboorhood areas.
 
 ### Data Summary
+ 
+### Data Limitations
+
+### Data Extensions
+
+## Preliminary Analysis: Summary Statistics
+
 We did some preliminary analysis and visualizations in order to better understand our data. Below you can see some of those results:
 
 We created a violin plot to showcase density and distribtuion of prices in different New York City neighbourhoods. We remove extreme values from the price variable by limiting this analysis on prices less than $250. It is clear from the plot that Manhattan has the highest average airbnb price among neighbourhood groups. 
@@ -50,19 +57,14 @@ The heatmap below shows airbnb prices in New York City based on latitute and lon
 The second heatmap shows each major neighbourhood group in New York City based on latitute and longitude. 
 
 ![Plot 5](artifacts/heatmap2.png)
- 
-### Data Limitations
 
-### Data Extensions
-
-## Preliminary Analysis: Summary Statistics
 
 ## Average prices by neighborhood
 An issue that we found initially is that the neighborhoods as defined in the Inside Airbnb dataset isn't consistent with the neighborhoods as reported to the Decennial Census and American Community Survey. So we recoded the neighborhoods to the [updated neighborhoods](https://data.cityofnewyork.us/City-Government/2020-Neighborhood-Tabulation-Areas-NTAs-Tabular/9nt8-h7nd) found through the NYC OpenData portal. 
 
 The updated neighborhoods divide up the city into smaller and more groups. Below is a map of average Airbnb Prices grouped by neighborhoods.
 
-![Plot 1](artifacts/neighbourhood_price_2021_1.png) ![Plot 2](artifacts/neighbourhood_price_2021_2.png)
+![Plot 6](artifacts/neighbourhood_price_2021_1.png) ![Plot 7](artifacts/neighbourhood_price_2021_2.png)
 
 Refer to [here](https://htmlpreview.github.io/?https://github.com/csridlen/eco395m-project-2/blob/main/artifacts/neighbourhood_price_2021_2.html) to see an interative plot with actual prices per neighborhood.
 
@@ -71,7 +73,9 @@ We decided to use proximity to subway stations and parks as a predictor in Airbn
 
 Plots below show the distance to the nearest [park](https://htmlpreview.github.io/?https://github.com/csridlen/eco395m-project-2/blob/main/artifacts/nearest_park2.html) and [station](https://htmlpreview.github.io/?https://github.com/csridlen/eco395m-project-2/blob/main/artifacts/nearest_station_2.html). 
 
-![Plot 3](artifacts/nearest_park2.png) ![Plot 4](artifacts/nearest_station_2.png)
+![Plot 7](artifacts/nearest_park2.png)
+
+![Plot 8](artifacts/nearest_station_2.png)
 
 ## #Data Dictionary 
 
@@ -84,10 +88,27 @@ Plots below show the distance to the nearest [park](https://htmlpreview.github.i
 
 ## Methodology
 
-
 ### Data Cleaning Process
 
 ## Analysis/Findings
+
+Before we perform any predictive models we check for multicollinearity in the data to make sure our coefficients are stable and do not result in high standard errors. Gladly, the VIFs do not indicate that our model has severe multicollinearity as they all are very close to 1. Next, we create train and test data for our linear regression, and check for the model performance based on RMSE, MSE, R2 and adjusted R2. Both the MSE and the RMSE are relatively low. However, the R2 and the adjusted R2 are also low with both an R2 and Adj R2 of 0.243, which indicates that the linear regression does not do a great job at predicting future prices. The results from the regression can be seen in the summary table below: 
+
+![Plot 9](artifacts/ols_regression.png)
+
+In order to draw comparisons, we also build a lasso model. Although lasso is an extension of the linear regression, in general we would expect that the former would perform better than the latter since the former trades an increase in bias for a decrease in variance. To perform this analysis we first create a list of alphas (the parameter which balances the amount of emphasis given to minimizing RSS vs minimizing sum of square of coefficients) to tune. We find the best value of alpha of 0.007. This is very close to zero, so we could expect to receive very similar results/coefficients to the linear regression. In order to visualize the residuals of the lasso model, we plot the residuals against the predicted values. The graph below shows the distribution of these residuals. 
+
+![Plot 10](artifacts/lasso_residuals.png)
+
+We also plot the lasso errors, 
+
+![Plot 11](artifacts/lasso_errors.png)
+
+We then perform feature selection by keeping only the non-zero coefficients in the final model. We see that variables minimum_nights, and room_type are negatively related to the dependent variable price, whereas, variables availability_365, calculated_host_listings_count, neighbourhood and neighbourhood_group are positively related to price. 
+
+![Plot 12](artifacts/lasso_fetures.png)
+
+With an R2 of 0.245 the lasso model performs seldom better than the linear model, which has an R2 of 0.243. 
 
 ## Conclusions
 
