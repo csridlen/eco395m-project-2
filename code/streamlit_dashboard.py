@@ -7,15 +7,15 @@ h2o.init()
 import numpy as np
 import pandas as pd
 from math import sqrt
-from h2o.estimators.word2vec import H2OWord2vecEstimator
-from h2o.estimators.gbm import H2OGradientBoostingEstimator
-import sklearn
+from readtable import *
+import numpy as np
 from sklearn import ensemble
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.preprocessing import OrdinalEncoder
-from sklearn.pipeline import make_pipeline
 from sklearn.compose import make_column_transformer
+from sklearn.metrics import mean_squared_error
+from math import sqrt
+import matplotlib.pyplot as plt
 
 # Initializing word2vec model
 # airbnb_path = "../data/newnh_airbnb_2021.csv"
