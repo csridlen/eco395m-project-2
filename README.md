@@ -120,9 +120,10 @@ With an R2 of 0.245 lasso performs seldom better than the linear model, with an 
 First, get the datasets.
 Put the .csv.gz files in the directory named *united-states_new-york-city* under *cleaning_code_from_lauri/0. Raw Data*.
 Run *1. Download and compile data/Aggregate Listings Data.ipynb*. This creates *NYC_Data_wideALL_2021.csv.gz* and *NYC_Data_longALL_2021.csv.gz* in *1. Download and compile data*.
+Copy the file `demo.env` to `.env` and modify it by providing the credentials theaccordingly, both in */code/* and 
+*cleaning_code_from_lauri/2. Clean data/*.
 Then, run *2. Clean data/1st_stage_panel_data_cleaning.ipynb*.
 This creates *NYC_1stStageClean_2021* in *Saved data* and puts in into the SQL database (We used Postgres).
-Change the database connection details in the *1st_stage_panel_data_cleaning.ipynb* accordingly.
 Plus, you need to update those in *readtable.py*, which has a function to query relevant columns needed for the analysis.
 maps.ipynb spits out *data/newnh_airbnb_2021.csv* and maps. 
 neighborhood_distances.py then uses it to spit out *cleaned_data_updated.csv*.

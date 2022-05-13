@@ -1,10 +1,20 @@
-import pandas as pd
+import os
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
+import pandas as pd
+
+load_dotenv()
+
+DATABASE_USERNAME = os.environ["DATABASE_USERNAME"]
+DATABASE_PASSWORD = os.environ["DATABASE_PASSWORD"]
+DATABASE_HOST = os.environ["DATABASE_HOST"]
+DATABASE_PORT = os.environ["DATABASE_PORT"]
+DATABASE_DATABASE = os.environ["DATABASE_DATABASE"]
+
+SQLALCHEMY_DATABASE_URL = f"postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_DATABASE}"
 
 def getairbnbdata():
-    conn_string = 'postgresql://postgres:eco395m@34.132.71.22:5432/airbnb'
-
-    db = create_engine(conn_string)
+    db = create_engine(SQLALCHEMY_DATABASE_URL)
     conn = db.connect()
     sql = """
     SELECT id, month, "List_month", last_scraped, host_id, host_name, host_since, host_location, 
@@ -36,4 +46,3 @@ def get_dists():
     distances = pd.read_csv(clean_data_path)[select]
     df = df.merge(distances, on = 'id', how = 'inner')
     return df
-airbnb_updated = get_dists()
