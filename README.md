@@ -29,7 +29,7 @@ Allowing airbnb hosts to predict a reasonable price for their airbnb listing bas
 
 The main source of data contains Airbnb data for the city of New York for the year 2021. The data was made available by [Inside Airbnb](http://insideairbnb.com/get-the-data/). We downloaded the three scraped datasets from this website. They were scraped in June, September, and December. They are in our repository.
 
-We also used data published by New York City's various institutions including locations of [subway stations](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49) and [parks](https://data.cityofnewyork.us/City-Government/ARCHIVED-Parks-Zones/rjaj-zgq7) as well as neighboorhood areas.
+We also used data published by New York City's various institutions including locations of [subway stations](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49) and [parks](https://data.cityofnewyork.us/City-Government/ARCHIVED-Parks-Zones/rjaj-zgq7) as well as [neighboorhood](https://data.cityofnewyork.us/City-Government/2020-Neighborhood-Tabulation-Areas-NTAs-Tabular/9nt8-h7nd) areas.
 
 ### Data Cleaning
 We first cleaned the data using the [Aggregate Listings Data.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/cleaning_code_from_lauri/1.%20Download%20and%20compile%20data/Aggregate%20Listings%20Data.ipynb) [1st_stage_panel_data_cleaning.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/cleaning_code_from_lauri/2.%20Clean%20data/1st_stage_panel_data_cleaning.ipynb) and put our dataset into the sql database, which we got from [this repo](https://github.com/kytola/CleanAirbnb).
@@ -39,7 +39,7 @@ The second one destrings the price, formats the dates, fills in NA values, calcu
 ### Data Summary
 In the dataset from Inside Airbnb, each row is an individual airbnb listing and the columns are characteristics of listings such as price, reviews, and availability. Also included are details about the host such as response time, count of other listings, and an indicator for super host.
 
-The GeoJSON data from the NYC OpenData portal contain coordinates that are used to form the geometry for maps. The [subway station data](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49) are individual coordinate points for each subway station in the city. The [neighborhoods](https://data.cityofnewyork.us/City-Government/2020-Neighborhood-Tabulation-Areas-NTAs-Tabular/9nt8-h7nd) and [parks](https://data.cityofnewyork.us/City-Government/Parks-Zones/4j29-i5ry) data uses multiple coordinates to create an area or “zone” of where the neighborhoods and parks are located.
+The GeoJSON data from the NYC OpenData portal contain coordinates that are used to form the geometry for maps. The subway station data are individual coordinate points for each subway station in the city. The neighborhoods and parks data uses multiple coordinates to create an area or “zone” of where the neighborhoods and parks are located.
 
 ### Data Extensions
 
