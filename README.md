@@ -55,7 +55,7 @@ We also show top 5 neighbourhoods by room type based on calculated host listings
 
 We also created a boxplot showing airbnb prices for each neighborhood group based on room type. We can see from the boxplot that Manhattan has the highest airbnb prices among neighbourhood, followed by Brooklyn and Queens. In all instances, entire home/apartments are more expensive than private rooms and shared rooms. 
 
-![Plot 3](artifacts/Boxplot.png)
+![Plot 3](artifacts/boxplot.png)
 
 The heatmap below shows airbnb prices in New York City based on latitute and longitude. 
 
@@ -84,31 +84,39 @@ Plots below show the distance to the nearest [park](https://htmlpreview.github.i
 
 ![Plot 8](artifacts/nearest_station_2.png)
 
-
-## #Data Dictionary 
-
-[Inside Airbnb](https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit#gid=982310896)
-
-
-## Database
-
-
-
-## Methodology
-We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/code/predict.ipynb). We also exctract variable importance from the gradient boosted model to narrow down for sellers which variables are most important. ![varimp](artifacts/varimp.png)
-
-## Dashboard Creation
-
-
-
-
-## Analysis/Findings
+## Preliminary Analysis: Regression Analysis
 
 We first run a simple linear regression of airbnb price on neighbourhood and on borough separately to see which basic geographic division is more helpful, we find that neighbourhoods are. We then add other controls and test a few different combinations and find that the best model contains neighbourhoods, different review scores, subway and park linear distance, and a feature like number of guests accommodated / beds that serve as a good proxy of relative size.
 
 Our best model has an R-squared of ~0.47 and a RMSE of about 100. While this is much higher than we'd have expected based on early stage analysis, the predictive power of the model is not amazing given the error and range og typical airbnb prices. Consequently we use a Rainbow test for linearity to check whether a linear model is the best choice here, and reject the hypothesis that it is. This motivates analysis using a different model such as GBM
 
 Reproducibility: All is found in ![this notebook](code/Regression_Analysis.ipynb). This includes step by step detailed instructions and comments.
+
+
+## #Data Dictionary 
+
+[airbnb_listings_2021](https://raw.githubusercontent.com/csridlen/eco395m-project-2/main/data/airbnb_listings_2021.csv)
+
+
+## Database
+
+## Methodology
+We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/code/predict.ipynb). We also exctract variable importance from the gradient boosted model to narrow down for sellers which variables are most important. ![varimp](artifacts/varimp.png)
+
+## Dashboard Creation
+In order to create an interactive Airbnb price prediction platform, we implement a Streamlit dashboard. This dashboard takes inputs for various Airbnb features such as bedrooms, beds, and number of nights. The dashboard takes these inputs and enters them into our gradient-boosted model for prediced prices. Then, the dasboard user can click the "predict" button and receive an outputed price-per-night estimate. This dashboard can be useful for both aribnb customers and hosts. Customers can use this dashboard to compare active listings to our model's predicted price, and hosts can explore what price might be most fitting for their particular listing. See [gbm_streamlit.py] for the structure and implementation ofthe Streamlit dashboard. 
+
+
+
+### Data Cleaning Process
+
+
+
+## Analysis/Findings
+
+Before we perform any predictive models we check for multicollinearity in the data to make sure our coefficients are stable and do not result in high standard errors. Gladly, the VIFs do not indicate that our model has severe multicollinearity as they all are very close to 1. Next, we create train and test data for our linear regression, and check for the model performance based on RMSE, MSE, R2 and adjusted R2. Both the MSE and the RMSE are relatively low. However, the R2 and the adjusted R2 are also low with both an R2 and Adj R2 of 0.243, which indicates that the linear regression does not do a great job at predicting future prices. The results from the regression can be seen in the summary table below: 
+
+![Plot 9](artifacts/ols_regression.png)
 
 In order to draw comparisons, we also build a lasso model. Although lasso is an extension of the linear regression, in general we would expect that the former would perform better than the latter since the former trades an increase in bias for a decrease in variance. To perform this analysis we first create a list of alphas (the parameter which balances the amount of emphasis given to minimizing RSS vs minimizing sum of square of coefficients) to tune. We find the best value of alpha of 0.007. This is very close to zero, so we could expect to receive very similar results/coefficients to the linear regression. In order to visualize the residuals of the lasso model, we plot the residuals against the predicted values. The graph below shows the distribution of these residuals. 
 
@@ -141,13 +149,9 @@ neighborhood_distances.py then uses it to spit out *cleaned_data_updated.csv*.
 This is used for baseline analyses. We use the entire dataset we have for the predictive model building.
 *analysis_visualizations.ipynb* gives you the graphs.
 
-(model building and dashboard building description)
+(model building description)
+Then, import the functions from *readtable.py* and *predict.ipynb* into *gbm_streamlit.py* to create a dashboard from the GBM model. 
 
 ## Extensions and Limitations
 
 ## Appendix
-
-Below are maps for distances created using the Haversine distance formula. 
-
-![Plot 13](artifacts/nearest_park.png)
-![Plot 14](artifacts/nearest_station.png)
