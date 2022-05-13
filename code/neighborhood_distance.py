@@ -16,8 +16,9 @@ lauri_data["new_neighbourhood"] = ""
 for i, row in lauri_data.iterrows():
     for feature in nycmap2020['features']:
         polygon = shape(feature['geometry'])
-        if polygon.contains(Point(row["longitude"],row["latitude"])):
+        if polygon.contains(Point(row["avg_lon"],row["avg_lat"])):
             lauri_data["new_neighbourhood"][i] = feature["properties"]["ntaname"]
+           
 
 
 # retrieve latitude and longitude of each station
@@ -29,13 +30,10 @@ for n in station_map['features']:
 
 stations = pd.DataFrame({"latitude": station_lat, "longitude": station_lon})
 
-lauri_data = lauri_data[lauri_data['latitude'].notna()]
-lauri_data = lauri_data[lauri_data['longitude'].notna()]
-
 
 # convert latitude and longitude to radians and zip them into coordinates
 stations['coordinate'] = list(zip(stations['latitude']*math.pi / 180, stations['longitude']*math.pi / 180))
-lauri_data['coordinate'] = list(zip(lauri_data['latitude']*math.pi / 180, lauri_data['longitude']*math.pi / 180))
+lauri_data['coordinate'] = list(zip(lauri_data['avg_lat']*math.pi / 180, lauri_data['avg_lon']*math.pi / 180))
 
 station_location = np.asarray(list(stations['coordinate']))
 tree = neighbors.BallTree(station_location, metric="haversine")
