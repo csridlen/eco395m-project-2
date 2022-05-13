@@ -24,13 +24,13 @@ We use a combination of explanatory data analysis, model prediction and machine 
 
 ## Data Collection
 
-The main source of data contains Airbnb data for the city of New York for the year 2021. The data was made available by [Inside Airbnb](http://insideairbnb.com/get-the-data/) and can be found on our [data folder of our repo](https://raw.githubusercontent.com/csridlen/eco395m-project-2/main/data/airbnb_listings_2021.csv).
+The main source of data contains Airbnb data for the city of New York for the year 2021. The data was made available by [Inside Airbnb](http://insideairbnb.com/get-the-data/). We downloaded the three scraped datasets from this website. They were scraped in June, September, and December. They are in our repository.
 
 We also used data published by New York City's various institutions including locations of [subway stations](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49) and [parks](https://data.cityofnewyork.us/City-Government/ARCHIVED-Parks-Zones/rjaj-zgq7) as well as neighboorhood areas.
 
 ### Data Summary
  
-### Data Limitations
+### Data Cleaning
 
 ### Data Extensions
 
@@ -113,6 +113,20 @@ With an R2 of 0.245 lasso performs seldom better than the linear model, with an 
 ## Conclusions
 
 ## Reproducability Instructions
+
+First, get the datasets.
+Put the .csv.gz files in the directory named *united-states_new-york-city* under *cleaning_code_from_lauri/0. Raw Data*.
+Run *1. Download and compile data/Aggregate Listings Data.ipynb*. This creates *NYC_Data_wideALL_2021.csv.gz* and *NYC_Data_longALL_2021.csv.gz* in *1. Download and compile data*.
+Then, run *2. Clean data/1st_stage_panel_data_cleaning.ipynb*.
+This creates *NYC_1stStageClean_2021* in *Saved data* and puts in into the SQL database (We used Postgres).
+Change the database connection details in the *1st_stage_panel_data_cleaning.ipynb* accordingly.
+Plus, you need to update those in *readtable.py*, which has a function to query relevant columns needed for the analysis.
+maps.ipynb spits out *data/newnh_airbnb_2021.csv* and maps. 
+neighborhood_distances.py then uses it to spit out *cleaned_data_updated.csv*.
+This is used for baseline analyses. We use the entire dataset we have for the predictive model building.
+*analysis_visualizations.ipynb* gives you the graphs.
+
+(model building and dashboard building description)
 
 ## Extensions and Limitations
 

@@ -32,8 +32,7 @@ def get_dists():
     df = getairbnbdata()
     # merge with distance data
     clean_data_path = '../data/cleaned_data_updated.csv'
-    select = ['id', 'station_dist', 'station_dist2', 'park_dist',
-       'park_dist2']
+    select = ['id', 'station_dist', 'station_dist2', 'park_dist', 'park_dist2']
     distances = pd.read_csv(clean_data_path)[select]
     df = df.merge(distances, on = 'id', how = 'inner')
     return df
