@@ -95,7 +95,7 @@ Reproducibility: All is found in ![this notebook](code/Regression_Analysis.ipynb
 
 ## #Data Dictionary 
 
-[airbnb_listings_2021](https://raw.githubusercontent.com/csridlen/eco395m-project-2/main/data/airbnb_listings_2021.csv)
+[Inside Airbnb](https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit#gid=982310896)
 
 
 ## Database
