@@ -16,6 +16,10 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 import matplotlib.pyplot as plt
 from readtable import *
+import pickle
+
+pickle_in = open('gbmmodel.pkl', 'rb') 
+model = pickle.load(pickle_in)
 
 # Data
 # airbnb = get_dists()
@@ -139,7 +143,7 @@ def prediction(host_since, host_response_rate, accomodates, bedrooms, beds, mini
  
  
     # Making predictions 
-    prediction = gbm_model.predict( 
+    prediction = model.predict( 
         [[host_since, host_response_rate, accomodates, bedrooms, beds, minimum_nights, availability_365, review_scores_rating, days_since_rev, host_is_superhost_dum, instant_bookable_dum, station_dist, park_dist, host_total_listings_count]])
      
     if prediction == 0:
