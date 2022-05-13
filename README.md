@@ -55,7 +55,7 @@ We also show top 5 neighbourhoods by room type based on calculated host listings
 
 We also created a boxplot showing airbnb prices for each neighborhood group based on room type. We can see from the boxplot that Manhattan has the highest airbnb prices among neighbourhood, followed by Brooklyn and Queens. In all instances, entire home/apartments are more expensive than private rooms and shared rooms. 
 
-![Plot 3](artifacts/boxplot.png)
+![Plot 3](artifacts/Boxplot.png)
 
 The heatmap below shows airbnb prices in New York City based on latitute and longitude. 
 
@@ -100,15 +100,13 @@ Reproducibility: All is found in ![this notebook](code/Regression_Analysis.ipynb
 
 ## Database
 
+
+
 ## Methodology
 We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/code/predict.ipynb). We also exctract variable importance from the gradient boosted model to narrow down for sellers which variables are most important. ![varimp](artifacts/varimp.png)
 
 ## Dashboard Creation
 
-
-
-
-### Data Cleaning Process
 
 
 
