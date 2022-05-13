@@ -84,25 +84,13 @@ Plots below show the distance to the nearest [park](https://htmlpreview.github.i
 
 ![Plot 8](artifacts/nearest_station_2.png)
 
-
-## Methodology
-We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/code/predict.ipynb). We also exctract variable importance from the gradient boosted model to narrow down for sellers which variables are most important. ![varimp](artifacts/varimp.png)
-
-## Dashboard Creation
-In order to create an interactive Airbnb price prediction platform, we implement a Streamlit dashboard. This dashboard takes inputs for various Airbnb features such as bedrooms, beds, and number of nights. The dashboard takes these inputs and enters them into our gradient-boosted model for prediced prices. Then, the dasboard user can click the "predict" button and receive an outputed price-per-night estimate. This dashboard can be useful for both aribnb customers and hosts. Customers can use this dashboard to compare active listings to our model's predicted price, and hosts can explore what price might be most fitting for their particular listing. See [gbm_streamlit.py] for the structure and implementation ofthe Streamlit dashboard. 
-
-
-## Analysis/Findings
+## Baseline Analysis
 
 We first run a simple linear regression of airbnb price on neighbourhood and on borough separately to see which basic geographic division is more helpful, we find that neighbourhoods are. We then add other controls and test a few different combinations and find that the best model contains neighbourhoods, different review scores, subway and park linear distance, and a feature like number of guests accommodated / beds that serve as a good proxy of relative size.
 
 Our best model has an R-squared of ~0.47 and a RMSE of about 100. While this is much higher than we'd have expected based on early stage analysis, the predictive power of the model is not amazing given the error and range og typical airbnb prices. Consequently we use a Rainbow test for linearity to check whether a linear model is the best choice here, and reject the hypothesis that it is. This motivates analysis using a different model such as GBM
 
-Reproducibility: All is found in ![this notebook](code/Regression_Analysis.ipynb). This includes step by step detailed instructions and comments.
-
 In order to draw comparisons, we also build a lasso model. To perform this analysis we first create a list of alphas (the parameter which balances the amount of emphasis given to minimizing RSS vs minimizing sum of square of coefficients) to tune. We find the best value of alpha of 0.007. This is very close to zero, so we could expect to receive very similar results/coefficients to the linear regression. In order to visualize the residuals of the lasso model, we plot the residuals against the predicted values. The graph below shows the distribution of these residuals. 
-
-Reproducibility: All is found in ![this notebook](code/Lasso_model.ipynb). This includes step by step detailed instructions and comments.
 
 ![Plot 10](artifacts/lasso_residuals.png)
 
@@ -115,6 +103,13 @@ We then perform feature selection by keeping only the non-zero coefficients in t
 ![Plot 12](artifacts/lasso_fetures.png)
 
 With an R2 of 0.245 lasso performs seldom better than the linear model, with an R2 of 0.243. 
+
+
+## Methodology
+We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/code/predict.ipynb). We also exctract variable importance from the gradient boosted model to narrow down for sellers which variables are most important. ![varimp](artifacts/varimp.png)
+
+## Dashboard Creation
+In order to create an interactive Airbnb price prediction platform, we implement a Streamlit dashboard. This dashboard takes inputs for various Airbnb features such as bedrooms, beds, and number of nights. The dashboard takes these inputs and enters them into our gradient-boosted model for prediced prices. Then, the dasboard user can click the "predict" button and receive an outputed price-per-night estimate. This dashboard can be useful for both aribnb customers and hosts. Customers can use this dashboard to compare active listings to our model's predicted price, and hosts can explore what price might be most fitting for their particular listing. See [gbm_streamlit.py] for the structure and implementation ofthe Streamlit dashboard. 
 
 ## Conclusions
 
@@ -131,8 +126,8 @@ Plus, you need to update those in *readtable.py*, which has a function to query 
 maps.ipynb spits out *data/newnh_airbnb_2021.csv* and maps. 
 neighborhood_distances.py then uses it to spit out *cleaned_data_updated.csv*.
 This is used for baseline analyses. We use the entire dataset we have for the predictive model building.
-*analysis_visualizations.ipynb* gives you the graphs.
-To build our predict models, we use *readtable.py* to load data into *word2vec_.ipynb* and *predict.ipynb*. These files build our word2vec and GBM price predictive models. 
+*analysis_visualizations.ipynb* gives you the graphs and 
+To build our predict models, we use *readtable.py* to load data into *word2vec_.ipynb* and *predict.ipynb*. These files build our word2vec and GBM price predictive models. *Lasso_model.ipynb* runs the lasso model. These include step by step detailed instructions and comments.
 Then, import the functions from *readtable.py* and *predict.ipynb* into *gbm_streamlit.py* to create a dashboard from the GBM model. If using a GCP instance, make sure your firewall settings allow the corresponding connection.
 
 ## Extensions and Limitations
