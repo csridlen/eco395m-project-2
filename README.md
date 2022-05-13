@@ -88,9 +88,6 @@ Plots below show the distance to the nearest [park](https://htmlpreview.github.i
 
 [airbnb_listings_2021](https://raw.githubusercontent.com/csridlen/eco395m-project-2/main/data/airbnb_listings_2021.csv)
 
-
-## Database
-
 ## Methodology
 We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/code/predict.ipynb). We also exctract variable importance from the gradient boosted model to narrow down for sellers which variables are most important. ![varimp](artifacts/varimp.png)
 
