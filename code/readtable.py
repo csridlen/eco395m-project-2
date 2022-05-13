@@ -25,5 +25,13 @@ def getairbnbdata():
 
     #close connection
     conn.close()
+    return df
 
+def get_dists():
+    # get airbnb data
+    df = getairbnbdata()
+    # merge with distance data
+    clean_data_path = '../data/cleaned_data_updated.csv'
+    distances = pd.read_csv(clean_data_path).iloc[:, -4:]
+    df = pd.concat([df, distances])
     return df
