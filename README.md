@@ -139,6 +139,9 @@ To build our predict models, we use *readtable.py* to load data into *word2vec_.
 Then, import the functions from *readtable.py* and *predict.ipynb* into *gbm_streamlit.py* to create a dashboard from the GBM model. If using a GCP instance, make sure your firewall settings allow the corresponding connection.
 
 ## Extensions and Limitations
+Our dashboard takes a lot of time to run because implementing the gradient boosted model. It would be useful to develop a 
+more efficient model for this. Plus, if we could use more amount of data, including the 2015-2019 ones we tried to work on,
+the performace of the prediction would improve.
 
 ## Appendix
 Below are maps for distances created using the Haversine distance formula. 
