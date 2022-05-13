@@ -46,3 +46,4 @@ def get_dists():
     distances = pd.read_csv(clean_data_path)[select]
     df = df.merge(distances, on = 'id', how = 'inner')
     return df
+
