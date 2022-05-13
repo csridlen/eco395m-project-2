@@ -96,9 +96,13 @@ Reproducibility: All is found in ![this notebook](code/Regression_Analysis.ipynb
 
 ## Database
 
+## Methodology
+We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb]("code/predict.ipynb")
+
 ## Dashboard Creation
 
-## Methodology
+
+
 
 ### Data Cleaning Process
 
