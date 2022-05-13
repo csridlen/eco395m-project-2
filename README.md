@@ -41,7 +41,9 @@ In the dataset from Inside Airbnb, each row is an individual airbnb listing and 
 
 The GeoJSON data from the NYC OpenData portal contain coordinates that are used to form the geometry for maps. The subway station data are individual coordinate points for each subway station in the city. The neighborhoods and parks data uses multiple coordinates to create an area or “zone” of where the neighborhoods and parks are located.
 
-## Preliminary Analysis: Summary Statistics
+## Preliminary Analysis
+
+### Summary Statistics
 
 We did some preliminary analysis and visualizations in order to better understand our data. Below you can see some of those results:
 
@@ -66,7 +68,7 @@ The second heatmap shows each major neighbourhood group in New York City based o
 ![Plot 5](artifacts/heatmap2.png)
 
 
-## Average prices by neighborhood
+### Average prices by neighborhood
 An issue that we found initially is that the neighborhoods as defined in the Inside Airbnb dataset isn't consistent with the neighborhoods as reported to the Decennial Census and American Community Survey. So we recoded the neighborhoods to the [updated neighborhoods](https://data.cityofnewyork.us/City-Government/2020-Neighborhood-Tabulation-Areas-NTAs-Tabular/9nt8-h7nd) found through the NYC OpenData portal. 
 
 The updated neighborhoods divide up the city into smaller and more groups. Below is a map of average Airbnb Prices grouped by neighborhoods.
@@ -84,7 +86,7 @@ Plots below show the distance to the nearest [park](https://htmlpreview.github.i
 
 ![Plot 8](artifacts/nearest_station_2.png)
 
-## Baseline Analysis
+### Baseline Analysis
 
 We first run a simple linear regression of airbnb price on neighbourhood and on borough separately to see which basic geographic division is more helpful, we find that neighbourhoods are. We then add other controls and test a few different combinations and find that the best model contains neighbourhoods, different review scores, subway and park linear distance, and a feature like number of guests accommodated / beds that serve as a good proxy of relative size.
 
@@ -105,7 +107,7 @@ We then perform feature selection by keeping only the non-zero coefficients in t
 With an R2 of 0.245 lasso performs seldom better than the linear model, with an R2 of 0.243. 
 
 
-## Methodology
+## Main Model Methodology
 We use a gradient boosted tree model to predict Airbnb prices. We one-hot-encoded categorical variables and tried to include as many relevant indicators as possible. To estimate the model yourself, see [predict.ipynb](https://github.com/csridlen/eco395m-project-2/blob/main/code/predict.ipynb). We also exctract variable importance from the gradient boosted model to narrow down for sellers which variables are most important. ![varimp](artifacts/varimp.png)
 
 ## Dashboard Creation
