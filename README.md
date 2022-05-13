@@ -155,3 +155,7 @@ Then, import the functions from *readtable.py* and *predict.ipynb* into *gbm_str
 ## Extensions and Limitations
 
 ## Appendix
+Below are maps for distances created using the Haversine distance formula. 
+
+![Plot 13](artifacts/nearest_park.png)
+![Plot 14](artifacts/nearest_station.png)
