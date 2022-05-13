@@ -150,7 +150,7 @@ This is used for baseline analyses. We use the entire dataset we have for the pr
 *analysis_visualizations.ipynb* gives you the graphs.
 
 (model building description)
-Then, import the functions from *readtable.py* and *predict.ipynb* into *gbm_streamlit.py* to create a dashboard from the GBM model. 
+Then, import the functions from *readtable.py* and *predict.ipynb* into *gbm_streamlit.py* to create a dashboard from the GBM model. If using a GCP instance, make sure your firewall settings allow the corresponding connection.
 
 ## Extensions and Limitations
 
